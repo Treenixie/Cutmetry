@@ -1,0 +1,14 @@
+{
+  "name": "cutmetry",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Shared geometry and project foundation for Cutmetry",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "check": "tsc --noEmit --project tsconfig.json",
+    "test": "npm run build && node --test tests/*.test.mjs"
+  },
+  "devDependencies": { "typescript": "^5.8.3" }
+}
