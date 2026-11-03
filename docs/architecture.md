@@ -1,6 +1,6 @@
 # Shared architecture proposal
 
-**Status:** proposed design, not implemented.
+**Status:** partly prototyped. The shared project/geometry contract exists; importer, topology, solver and editor architecture remain proposals.
 
 ## Guiding invariant
 

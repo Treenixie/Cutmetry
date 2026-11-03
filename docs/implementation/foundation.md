@@ -1,10 +1,12 @@
 # Implementation: shared foundation
 
-**Status:** proposed implementation approach.
+**Status:** partially implemented. See [Milestone 01](milestone-01.md) for exact code coverage and limitations.
 
 ## Objective
 
 Build one usable project, one precise geometry model, and one canvas for all three product areas before treating them as independent feature flows.
+
+The initial TypeScript core now contains the basic model, physical units, editable path segments, bounds, transforms, validation and JSON metadata round trips. The rest of the work packages remain proposed.
 
 ## Suggested work packages
 

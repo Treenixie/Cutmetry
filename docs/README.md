@@ -2,7 +2,7 @@
 
 Cutmetry is one product for digitizing physical patterns, preparing and verifying digital templates, and nesting parts on materials.
 
-**Status:** planning / pre-implementation. The documents distinguish confirmed product decisions from technical proposals. Describing a capability here does not mean it is implemented.
+**Status:** early implementation. A tested geometry/project foundation exists, but the editor and three user workflows are not implemented. The documents distinguish confirmed product decisions from technical proposals. Describing a capability here does not mean it is implemented.
 
 ## Start here
 
@@ -12,6 +12,7 @@ Cutmetry is one product for digitizing physical patterns, preparing and verifyin
 
 ## Implementation plans
 
+- [Milestone 01](implementation/milestone-01.md): verified initial core and explicit limitations.
 - [Shared foundation](implementation/foundation.md): project data, imports, precision, editor, and exports.
 - [Digitize](implementation/digitize.md): photo to calibrated vector geometry.
 - [Prepare](implementation/prepare.md): PDF inspection, printing checks, and virtual assembly.
