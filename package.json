@@ -11,7 +11,9 @@
     "build": "tsc --project tsconfig.json",
     "check": "tsc --noEmit --project tsconfig.json",
     "test": "npm run build && node --test tests/*.test.mjs",
-    "dev": "npm run build && node tools/serve.mjs"
+    "dev": "npm run build && node tools/serve.mjs",
+    "build:pages": "npm run build && node tools/build-pages.mjs",
+    "check:pages": "node tools/check-pages.mjs"
   },
   "devDependencies": {
     "typescript": "^5.8.3"

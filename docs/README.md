@@ -19,6 +19,10 @@ Cutmetry is one product for digitizing physical patterns, preparing and verifyin
 - [Prepare](implementation/prepare.md): PDF inspection, printing checks, and virtual assembly.
 - [Nest](implementation/nest.md): constrained material layout and optimization.
 
+## Deployment
+
+- [Cloudflare Pages](deployment/cloudflare-pages.md): Git-based deployment, verified build output, and public-preview limitations.
+
 ## Exploration
 
 - [Ideas backlog](ideas/backlog.md): improvements and experiments to evaluate, **not** approved commitments.

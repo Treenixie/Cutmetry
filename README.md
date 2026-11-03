@@ -29,3 +29,12 @@ This compiles TypeScript and runs the unit tests.
 ## Documentation
 
 Project scope, implementation plans, decisions and ideas are maintained in [docs](docs/README.md). See [Milestone 02](docs/implementation/workspace-ui.md) for the prototype's exact capabilities and limitations, and [Milestone 01](docs/implementation/milestone-01.md) for the shared geometry foundation.
+
+## Cloudflare Pages
+
+The preview can be deployed through Git-connected Cloudflare Pages. **Hosting is not enabled by repository changes alone.** See [Cloudflare Pages deployment](docs/deployment/cloudflare-pages.md) for the exact branch, build command, output directory, and account connection steps.
+
+```sh
+npm run build:pages
+npm run check:pages
+```
