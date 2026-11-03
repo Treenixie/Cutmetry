@@ -12,6 +12,7 @@ Cutmetry is one product for digitizing physical patterns, preparing and verifyin
 
 ## Implementation plans
 
+- [Milestone 02: workspace UI](implementation/workspace-ui.md): interactive visual prototype, local preview, and current limits.
 - [Milestone 01](implementation/milestone-01.md): verified initial core and explicit limitations.
 - [Shared foundation](implementation/foundation.md): project data, imports, precision, editor, and exports.
 - [Digitize](implementation/digitize.md): photo to calibrated vector geometry.

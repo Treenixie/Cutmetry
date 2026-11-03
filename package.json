@@ -4,11 +4,16 @@
   "version": "0.1.0",
   "type": "module",
   "description": "Shared geometry and project foundation for Cutmetry",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build": "tsc --project tsconfig.json",
     "check": "tsc --noEmit --project tsconfig.json",
-    "test": "npm run build && node --test tests/*.test.mjs"
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "dev": "npm run build && node tools/serve.mjs"
   },
-  "devDependencies": { "typescript": "^5.8.3" }
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
 }

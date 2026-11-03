@@ -1,23 +1,31 @@
 # Cutmetry
 A tool for digitizing physical patterns, verifying digital templates, and optimizing material cutting.
 
-## Documentation
+## Workspace preview
 
-Project scope, implementation plans, decisions, and ideas are maintained in [docs](docs/README.md).
+Cutmetry has an **early interactive workspace prototype**, connected to its shared TypeScript geometry model. It contains Digitize, Prepare and Nest tabs, a scalable canvas, a parts browser and a properties inspector. This is **not** a complete application: photo, PDF and SVG import, advanced editing and real nesting optimization have not been implemented.
 
-## Development status
+The prototype runs locally and does not upload files or require an account.
 
-Early foundation only. The user-facing editor and Digitize / Prepare / Nest workflows are not implemented yet.
-
-A platform-neutral TypeScript geometry and project core lives in [src/core](src/core). It tracks real-world millimeter coordinates, editable curves, parts and basic layout references. See [Milestone 01](docs/implementation/milestone-01.md) for implemented capabilities and limitations.
-
-### Run checks
+### Run locally
 
 Requires Node.js 20+ and npm:
 
 ```sh
 npm install
+npm run dev
+```
+
+Open `http://127.0.0.1:4173/`. Use the sample project, inspect shapes, switch tabs and save/open a Cutmetry JSON project. The preview is designed for desktop-sized windows.
+
+### Test the core
+
+```sh
 npm test
 ```
 
-The checks compile TypeScript and run the unit tests. No service, account, or external runtime is needed.
+This compiles TypeScript and runs the unit tests.
+
+## Documentation
+
+Project scope, implementation plans, decisions and ideas are maintained in [docs](docs/README.md). See [Milestone 02](docs/implementation/workspace-ui.md) for the prototype's exact capabilities and limitations, and [Milestone 01](docs/implementation/milestone-01.md) for the shared geometry foundation.

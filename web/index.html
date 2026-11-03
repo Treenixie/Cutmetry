@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#10141b" />
+  <title>Cutmetry · Workspace</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div class="identity" aria-label="Cutmetry">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M7 7h18v4H11v14H7zM25 16v9H16v-4h5v-5z" fill="currentColor"/><path d="M13 14l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <div class="brand-word">cutmetry<span class="brand-dot">.</span></div>
+        <div class="app-divider"></div>
+        <div class="project-name" id="projectTitle">Untitled project</div>
+        <span class="prototype-chip">WORKSPACE PREVIEW</span>
+      </div>
+      <div class="header-actions">
+        <button class="button quiet" id="newProject" type="button" title="Create an empty project"><span class="button-symbol">＋</span> New</button>
+        <button class="button quiet" id="openProject" type="button"><span class="button-symbol">↥</span> Open project</button>
+        <button class="button primary" id="saveProject" type="button"><span class="button-symbol">↓</span> Save project</button>
+        <input type="file" id="projectFile" accept=".json,application/json" hidden />
+      </div>
+    </header>
+
+    <nav class="workflow-nav" aria-label="CUTMETRY tools">
+      <div class="workflow-tabs" role="tablist" aria-label="Workspaces">
+        <button class="workflow-tab active" data-mode="digitize" role="tab" aria-selected="true"><span class="mode-symbol">⌗</span><span>Digitize</span></button>
+        <button class="workflow-tab" data-mode="prepare" role="tab" aria-selected="false"><span class="mode-symbol">▤</span><span>Prepare</span></button>
+        <button class="workflow-tab" data-mode="nest" role="tab" aria-selected="false"><span class="mode-symbol">▦</span><span>Nest</span></button>
+      </div>
+      <div class="workflow-hint" id="workflowHint">Physical template → editable geometry</div>
+    </nav>
+
+    <div class="workspace-grid">
+      <aside class="sidebar left-sidebar" aria-label="Project browser">
+        <div class="panel-section project-overview">
+          <div class="section-heading">PROJECT <button class="icon-button subtle" id="renameProject" title="Rename project" aria-label="Rename project">✎</button></div>
+          <div class="project-heading" id="sidebarProjectName">Untitled project</div>
+          <div class="project-meta" id="projectMeta">0 parts · mm</div>
+          <div class="project-caption">All three tools share these project parts.</div>
+        </div>
+        <div class="panel-section parts-browser">
+          <div class="section-heading"><span>PARTS <span class="small-count" id="partCount">0</span></span><button class="icon-button" id="addPart" title="Add a sample rectangle" aria-label="Add rectangle">＋</button></div>
+          <div id="partsList" class="parts-list" aria-label="Project parts"></div>
+        </div>
+        <div class="sidebar-bottom">
+          <div class="help-heading"><span class="help-icon">i</span> Local by design</div>
+          <p>Your project file stays on your computer. Photo, PDF and SVG import are not implemented in this preview.</p>
+          <button id="loadDemo" class="text-link" type="button">Load example project <span>↗</span></button>
+        </div>
+      </aside>
+
+      <main class="editor" aria-label="Shared editor">
+        <div class="editor-toolbar">
+          <div class="tool-title"><span class="active-indicator"></span><strong id="editorTitle">Geometry canvas</strong><span class="tool-subtitle" id="editorSubtitle">Common project coordinates · millimeters</span></div>
+          <div class="canvas-tools" aria-label="Canvas controls">
+            <span class="toolbar-caption">VIEW</span>
+            <button id="zoomOut" class="tool-button" type="button" aria-label="Zoom out">−</button>
+            <span id="zoomValue" class="zoom-text">100%</span>
+            <button id="zoomIn" class="tool-button" type="button" aria-label="Zoom in">＋</button>
+            <span class="tool-separator"></span>
+            <button id="fitView" class="tool-button fit-button" type="button">Fit</button>
+          </div>
+        </div>
+        <div class="canvas-wrap" id="canvasWrap">
+          <svg id="canvas" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Project geometry preview" tabindex="0">
+            <defs>
+              <pattern id="smallGrid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="#8fa0b5" stroke-opacity=".12" stroke-width=".65"/></pattern>
+              <pattern id="bigGrid" width="50" height="50" patternUnits="userSpaceOnUse"><rect width="50" height="50" fill="url(#smallGrid)"/><path d="M 50 0 L 0 0 0 50" fill="none" stroke="#8fa0b5" stroke-opacity=".16" stroke-width=".8"/></pattern>
+              <filter id="sheetShadow"><feDropShadow dx="0" dy="8" stdDeviation="15" flood-color="#03060b" flood-opacity=".45"/></filter>
+            </defs>
+            <g id="canvasScene"></g>
+          </svg>
+          <div class="canvas-top-left"><span class="canvas-pill" id="canvasKind">GEOMETRY PREVIEW</span><span class="canvas-pill muted-pill" id="canvasUnit">1 unit = 1 mm</span></div>
+          <div class="canvas-empty" id="emptyState" hidden><div class="empty-symbol">⌗</div><h2>Your workspace is empty</h2><p>Add a rectangle or load an example project to inspect the canvas.</p><button id="emptyAddPart" class="button primary" type="button">＋ Add rectangle</button></div>
+          <div class="canvas-bottom-left"><span class="dot"></span><span id="canvasHint">Scroll to zoom · Drag background to pan</span></div>
+        </div>
+        <div class="editor-status"><div><span class="status-diamond">◇</span><span id="statusLeft">Ready · No source files uploaded</span></div><div id="statusRight">Coordinates: mm <span class="status-split">/</span> Local project</div></div>
+      </main>
+
+      <aside class="sidebar inspector" aria-label="Properties panel">
+        <div class="panel-section inspector-heading">
+          <div class="section-heading">INSPECTOR</div>
+          <h2 id="inspectorTitle">Part properties</h2>
+          <p id="inspectorCaption">Select a part to inspect its dimensions.</p>
+        </div>
+        <div id="inspectorContent" class="inspector-content"></div>
+        <div class="mode-information">
+          <div class="mode-info-label">WORKSPACE STATUS</div>
+          <div class="mode-info-title" id="modeInfoTitle">Digitize</div>
+          <div class="mode-info-text" id="modeInfoText">Photo calibration and vector tracing are planned. The visible geometry is editable project data, not a traced image.</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+  <div class="toast" id="toast" aria-live="polite" role="status"></div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
