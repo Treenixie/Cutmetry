@@ -10,6 +10,11 @@ Cutmetry is one product for digitizing physical patterns, preparing and verifyin
 - [Architecture](architecture.md): proposed shared geometry model and editor foundations.
 - [Decisions](decisions.md): decisions already made and open technical questions.
 
+## Visual design
+
+- [Art direction](design/art-direction.md): cozy tactile palette, paper/chalk/mat surfaces, line semantics, three modes and migration plan.
+- [Design tokens](design/tokens.css): proposed CSS variables for the light pastel theme; not yet applied to the prototype.
+
 ## Implementation plans
 
 - [Milestone 02: workspace UI](implementation/workspace-ui.md): interactive visual prototype, local preview, and current limits.
