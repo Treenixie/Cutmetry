@@ -79,6 +79,8 @@ Hex colors below are suggested values, not individually approved. The semantic r
 
 ### Tracing paper / translucent overlays
 
+**Approved functional uses:** Digitize photo tracing and sheet lifting; comparison of pattern versions; Prepare PDF-page alignment and multi-size overlays; Nest picked-up paper with former-position ghost; temporary guides, measurements and annotations. See [implementation plan](tracing-paper-implementation.md).
+
 - For photo-to-vector comparison, pattern layer visualization and ghosted shapes.
 - Slight warm/translucent treatment; linework remains distinct.
 - Avoid actual backdrop blur on geometry. Blur harms precision and creates unnecessary compositing cost.

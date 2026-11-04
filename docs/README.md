@@ -14,6 +14,7 @@ Cutmetry is one product for digitizing physical patterns, preparing and verifyin
 
 - [Art direction](design/art-direction.md): cozy tactile palette, paper/chalk/mat surfaces, line semantics, three modes and migration plan.
 - [Design tokens](design/tokens.css): proposed CSS variables for the light pastel theme; not yet applied to the prototype.
+- [Tracing paper & material UI implementation](design/tracing-paper-implementation.md): approved scenarios, layer architecture, interactions, file-by-file changes and test plan.
 
 ## Implementation plans
 

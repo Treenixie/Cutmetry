@@ -31,6 +31,11 @@
 
   /* Canvas and grid */
   --cm-mat: #879B90;
+  --cm-tracing-paper: #F5F1E9;
+  --cm-tracing-border: rgba(110, 102, 92, .20);
+  --cm-tracing-opacity: .62; /* suggested UI default, adjustable */
+  --cm-ghost-stroke: #7D8E86;
+  --cm-ghost-opacity: .48;
   /* Paper remains unruled; grid belongs to the cutting mat. */
   --cm-grid-mat-minor: rgba(250, 248, 239, 0.12);
   --cm-grid-mat-major: rgba(250, 248, 239, 0.24);
@@ -46,6 +51,7 @@
   /* Seamless fibrous dressmaking-pattern-paper texture: adjust after reviewing actual asset */
   --cm-paper-texture-opacity: 0.015;
   --cm-mat-grain-opacity: 0.018;
+  --cm-shadow-lifted-paper: 0 8px 22px rgba(77, 71, 60, .13);
   --cm-shadow-soft: 0 3px 14px rgba(70, 62, 52, 0.07);
   --cm-shadow-popover: 0 12px 28px rgba(70, 62, 52, 0.10);
 
