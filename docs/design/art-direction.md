@@ -12,7 +12,7 @@ A quiet, precise digital craft workspace inspired by pattern paper, tracing pape
 Approved direction:
 - Warm white–beige–grey foundation rather than the previous dark interface.
 - Several **muted pastel accents**, used sparingly and purposefully; no dominant purple.
-- Subtle dashed lines, chalk-like annotations, a muted green gridded cutting mat and **watercolor drawing-paper texture with a fine, porous tooth**.
+- Subtle dashed lines, chalk-like annotations, a muted green gridded cutting mat and **subtle pattern-making paper texture**.
 - Paper and mat textures must be **seamless, soft, low contrast and barely perceptible**. Real texture assets are permitted.
 - A single coherent product identity across Digitize, Prepare and Nest.
 
@@ -61,19 +61,19 @@ Hex colors below are suggested values, not individually approved. The semantic r
 
 ### Paper
 
-- Use on the drawing sheet, paper-like cards, preview pages and optionally some panel backgrounds.
-- **Reference material: cold-pressed watercolor/drawing paper**, not smooth printer paper, tracing paper or a generic digital noise overlay. The surface has a shallow, irregular **porous tooth**: softly rounded micro-pits, small raised fibers and gentle variations in relief.
-- Keep the sheet warm off-white. A hint of tactile micro-shadow/highlight should make the pores apparent when viewed closely, while the overall surface remains calm and nearly uniform from normal working distance.
-- Texture must be **seamless, non-directional and organic**. A carefully tiled photographic scan or purpose-made height-map is permitted; test a sufficiently large repeat (suggested 512–1024 CSS px) at multiple scales and under different display densities to prevent visible repetition.
-- Keep contrast restrained (starting target around 1–3% perceived local variation, adjusted by visual testing); texture should be felt rather than distract. Preserve the porous structure without turning it into rough sandpaper, dots, stains, wrinkles, scratches or pronounced watercolor paint blooms.
-- Use on Digitize/Prepare work surfaces and paper-like parts/cards where appropriate. Do not put texture over small text, precision handles, scans being analyzed or accurate linework. Render it behind geometry in a distinct visual layer.
-- Do not bake watercolor-paper texture into SVG/PDF outputs unless the user explicitly requests a decorative textured export.
+- Primary reference: **plain dressmaking pattern drafting paper**, not watercolor drawing paper or school squared paper.
+- Main sheet: warm off-white, matte and subtly fibrous, with very low-contrast, seamless material texture.
+- Tracing overlay: semi-transparent tracing or Swedish tracing paper.
+- Optional cutout variants: natural tan kraft paper and sturdier manila pattern card.
+- Some professional drafting paper has dots and crosses for measurements, but CUTMETRY's default paper remains **unruled**.
+- Keep texture unobtrusive and behind sharp vector contours. Grid lines belong to the **green cutting mat in Nest**, not to paper.
+- Never bake texture into manufacturing exports unless explicitly requested.
 
 ### Cutting mat
 
 - Mainly the **Nest** workspace background (may later be a user-selectable canvas surface).
 - Muted sage/grey-green, not saturated emerald. Faint orthogonal grid.
-- The grid is *functional*: fine every proposed 10 mm, major every 50 mm, labels as needed. These are suggested increments and must remain tied to real-world dimensions and zoom.
+- The **cutting mat's** grid is *functional*: fine every proposed 10 mm, major every 50 mm, labels as needed. These are suggested increments and must remain tied to real-world dimensions and zoom.
 - A light seamless rubber-like surface texture is optional, but low contrast and non-directional. It may **never** obscure piece outlines.
 - **Implementation:** render the measurement grid from canonical mm coordinates in the SVG/canvas viewport, following zoom/pan. A repeating CSS pixel grid alone is unsuitable for physically accurate measurement.
 
@@ -130,7 +130,7 @@ Line styles must be distinguished by **dash, weight and labeling** rather than c
 
 ### Prepare — paper sheets + drafting marks
 
-- Distinct warm off-white sheets with subtle boundaries and a barely visible **porous watercolor-paper surface**; page measurements and registration marks stay perfectly crisp.
+- Distinct warm off-white sheets with subtle boundaries and a barely visible **fine matte pattern-paper fibers**; page measurements and registration marks stay perfectly crisp.
 - Show registration marks, overlap, clipping and print-safe areas with thin structured lines.
 - Soft peach warns about issues, combined with icon/text; muted sage can denote checked requirements, not a guarantee about a physical printer.
 - Page arrangement must remain crisp at all zoom levels.
@@ -138,7 +138,7 @@ Line styles must be distinguished by **dash, weight and labeling** rather than c
 ### Nest — cutting mat + paper pattern pieces
 
 - Work area can use the muted green cutting mat, with physically scaled, restrained grid.
-- Pieces feel like thin watercolor-paper cutouts: pale neutral fill, barely visible porous tooth, fine graphite cut contour, tiny gentle shadow if it does not obscure overlaps.
+- Pieces feel like thin sewing-pattern-paper cutouts: pale neutral fill, barely visible fibers, fine graphite cut contour, tiny gentle shadow if it does not obscure overlaps.
 - Selected item gets dusty-rose edging; material constraint warnings can be peach.
 - Keep overlap detection separate from decoration; a pretty-looking paper arrangement is not a validated cut plan.
 - The shared header/sidebars stay neutral when mode changes. The *work surface* carries the main metaphor.
@@ -155,7 +155,7 @@ Token groups: base/ink, pastel fills and dark inks, canvas material backgrounds,
 /* Visual style references; not the final canvas implementation. */
 .cm-paper {
   background-color: var(--cm-paper);
-  /* Optional seamless cold-pressed watercolor-paper tile, porous and subtly relief-textured. */
+  /* Optional seamless lightweight, fibrous dressmaking-paper tile. */
 }
 .cm-mat {
   background-color: var(--cm-mat);
@@ -175,7 +175,7 @@ Files inspected at `dev` on 2026-11-04: `web/styles.css`, `web/index.html`, `web
 2. **Remove hard-coded dark values:** migrate `.app-header`, `.workflow-nav`, `.sidebar`, `.editor-toolbar`, `.canvas-wrap`, `.editor-status`, `.inspector`, `.toast`, `.part-row`, `.button` and hover/focus states to named tokens. Merely changing `:root` will **not** recolor this app.
 3. **`web/index.html`:** change `theme-color`, canvas `smallGrid`/`bigGrid` SVG stroke colors and the static `sheetShadow` treatment. Keep dimensions aligned with millimeters.
 4. **`web/app.js`:** refactor hardcoded dark purple fills/strokes in `drawPart()`, page/material rendering, selection, labels and helper marks. Use CSS custom properties on SVG elements where possible, or centrally named JS palette tokens. Preserve meaning of geometric paths.
-5. **Material surfaces:** add an optional seamless **porous watercolor-paper texture (cold-pressed look)** to Digitize/Prepare as a separate low-opacity visual layer, not generic flat noise; use precise, zoom-aware muted mat grid in Nest.
+5. **Material surfaces:** add an optional seamless **fibrous dressmaking-pattern-paper texture** to Digitize/Prepare as a separate low-opacity visual layer, not generic flat noise; use precise, zoom-aware muted mat grid in Nest.
 6. **Selected/active states:** add consistent pastel selection and focus behavior for workflow tabs, part rows, toolbar buttons and inspector controls. Active state must also have structural affordances.
 7. **Quality gate:** visually review at regular desktop widths, 100% and 200% zoom, check text/controls contrast, ensure no texture tiling artifacts, no lost rulers and no changes to saved JSON geometry.
 8. **Deployment:** only then merge the CSS and rendering changes. Cloudflare Pages can rebuild from `dev`, but design documents alone should not silently change the live prototype.
@@ -185,7 +185,7 @@ Files inspected at `dev` on 2026-11-04: `web/styles.css`, `web/index.html`, `web
 - [ ] The application reads as **warm white / beige / grey**, without a dominant purple or dark shell.
 - [ ] Rose, blue, sage, peach and lilac-grey accents are small and semantically stable.
 - [ ] Paper and cutting-mat texture tiles are seamless with no visible repeats at different zoom levels.
-- [ ] Watercolor-paper texture has visible *porous tooth* on close inspection, but remains barely noticeable at normal distance; it never affects reading or measurement.
+- [ ] Pattern-paper texture is faintly fibrous on close inspection, but remains barely noticeable at normal distance; it never affects reading or measurement.
 - [ ] The Nest grid represents physical dimensions at all view scales.
 - [ ] Cut/fold/seam/guide/selection lines remain distinguishable without color.
 - [ ] Vector source geometry, JSON output and future SVG/PDF exports stay precise and untextured by default.
