@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#10141b" />
+  <meta name="theme-color" content="#F3E9DB" />
   <title>Cutmetry · Workspace</title>
   <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./workshop.css" />
 </head>
 <body>
   <div class="app">
@@ -48,7 +49,7 @@
         </div>
         <div class="sidebar-bottom">
           <div class="help-heading"><span class="help-icon">i</span> Local by design</div>
-          <p>Your project file stays on your computer. Photo, PDF and SVG import are not implemented in this preview.</p>
+          <details class="project-help"><summary>About this preview</summary><p>Projects stay local. Photo, PDF and SVG import are not yet available.</p></details>
           <button id="loadDemo" class="text-link" type="button">Load example project <span>↗</span></button>
         </div>
       </aside>
@@ -68,15 +69,18 @@
         <div class="canvas-wrap" id="canvasWrap">
           <svg id="canvas" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Project geometry preview" tabindex="0">
             <defs>
-              <pattern id="smallGrid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="#8fa0b5" stroke-opacity=".12" stroke-width=".65"/></pattern>
-              <pattern id="bigGrid" width="50" height="50" patternUnits="userSpaceOnUse"><rect width="50" height="50" fill="url(#smallGrid)"/><path d="M 50 0 L 0 0 0 50" fill="none" stroke="#8fa0b5" stroke-opacity=".16" stroke-width=".8"/></pattern>
-              <filter id="sheetShadow"><feDropShadow dx="0" dy="8" stdDeviation="15" flood-color="#03060b" flood-opacity=".45"/></filter>
+              <pattern id="smallGrid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="#ecf0e8" stroke-opacity=".23" stroke-width=".65"/></pattern>
+              <pattern id="bigGrid" width="50" height="50" patternUnits="userSpaceOnUse"><rect width="50" height="50" fill="url(#smallGrid)"/><path d="M 50 0 L 0 0 0 50" fill="none" stroke="#edf1e9" stroke-opacity=".30" stroke-width=".85"/></pattern>
+              <pattern id="paperTexture" width="280" height="280" patternUnits="userSpaceOnUse"><image href="./assets/paper-fiber.svg" width="280" height="280"/></pattern>
+              <pattern id="matTexture" width="280" height="280" patternUnits="userSpaceOnUse"><image href="./assets/mat-fiber.svg" width="280" height="280"/></pattern>
+              <filter id="sheetShadow"><feDropShadow dx="1" dy="4" stdDeviation="4" flood-color="#6d5842" flood-opacity=".22"/></filter>
             </defs>
             <g id="canvasScene"></g>
           </svg>
           <div class="canvas-top-left"><span class="canvas-pill" id="canvasKind">GEOMETRY PREVIEW</span><span class="canvas-pill muted-pill" id="canvasUnit">1 unit = 1 mm</span></div>
           <div class="canvas-empty" id="emptyState" hidden><div class="empty-symbol">⌗</div><h2>Your workspace is empty</h2><p>Add a rectangle or load an example project to inspect the canvas.</p><button id="emptyAddPart" class="button primary" type="button">＋ Add rectangle</button></div>
           <div class="canvas-bottom-left"><span class="dot"></span><span id="canvasHint">Scroll to zoom · Drag background to pan</span></div>
+          <div class="canvas-note" id="canvasNote" aria-hidden="true">paper &amp; pattern</div>
         </div>
         <div class="editor-status"><div><span class="status-diamond">◇</span><span id="statusLeft">Ready · No source files uploaded</span></div><div id="statusRight">Coordinates: mm <span class="status-split">/</span> Local project</div></div>
       </main>
@@ -88,11 +92,15 @@
           <p id="inspectorCaption">Select a part to inspect its dimensions.</p>
         </div>
         <div id="inspectorContent" class="inspector-content"></div>
-        <div class="mode-information">
-          <div class="mode-info-label">WORKSPACE STATUS</div>
-          <div class="mode-info-title" id="modeInfoTitle">Digitize</div>
-          <div class="mode-info-text" id="modeInfoText">Photo calibration and vector tracing are planned. The visible geometry is editable project data, not a traced image.</div>
-        </div>
+        <section class="material-controls" id="materialControls" aria-label="Tracing sheet controls">
+          <div class="material-row"><span>TRACING PAPER</span><button type="button" id="toggleOverlay" aria-pressed="true">Visible</button></div>
+          <label for="overlayOpacity">Opacity <output id="overlayOpacityValue" for="overlayOpacity">62%</output></label>
+          <input type="range" id="overlayOpacity" min="10" max="90" step="1" value="62" />
+        </section>
+        <details class="mode-information" id="modeHelp">
+          <summary><span class="mode-info-label">ABOUT THIS MODE</span><span class="mode-info-title" id="modeInfoTitle">Digitize</span></summary>
+          <p class="mode-info-text" id="modeInfoText">Photo calibration and vector tracing are planned. The visible geometry is project data, not a traced image.</p>
+        </details>
       </aside>
     </div>
   </div>

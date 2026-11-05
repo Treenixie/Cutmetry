@@ -43,6 +43,8 @@ let toastTimer;
 let camera = { x: -60, y: -80, width: 480, height: 385 };
 let pointer = null;
 let dirty = false;
+let overlayOpacity = 62;
+let overlayVisible = true;
 
 function esc(text) {
   return String(text).replace(/[&<>"']/g, (symbol) => ({
@@ -114,17 +116,22 @@ function pathData(path) {
 }
 function drawPart(part, x, y, selected, placementId = "", rotationDeg = 0, mirrored = false) {
   const bounds = partBounds(part) ?? { minX: 0, minY: 0, maxX: 0, maxY: 0 };
-  const outlined = part.paths.filter((path) => path.role === "outline");
+  const outlines = part.paths.filter((path) => path.role === "outline");
   const holes = part.paths.filter((path) => path.role === "hole");
-  const construction = part.paths.filter((path) => path.role === "construction");
-  const paths = outlined.map((path) => `<path class="part-contour" d="${pathData(path)}" fill="${selected ? '#46345f' : '#293446'}" fill-opacity=".72" stroke="${selected ? '#c6afff' : '#8397b2'}" stroke-width="1.5" />`).join("")
-    + holes.map((path) => `<path d="${pathData(path)}" fill="#141c28" stroke="#c2b3ec" stroke-width="1.2" stroke-dasharray="3 2"/>`).join("")
-    + construction.map((path) => `<path d="${pathData(path)}" fill="none" stroke="#6b8099" stroke-dasharray="4 3"/>`).join("");
+  const constructions = part.paths.filter((path) => path.role === "construction");
+  const dragging = Boolean(placementId && pointer?.type === "placement" && pointer?.placementId === placementId && pointer.changed);
+  const paths = outlines.map((path) => `<path class="part-contour" d="${pathData(path)}" fill="url(#paperTexture)" stroke="${selected ? '#b47e81' : '#66574c'}" stroke-width="${selected ? 2 : 1.5}" />`).join("")
+    + holes.map((path) => `<path class="part-hole" d="${pathData(path)}" fill="#ede5d9" stroke="#8f7867" stroke-width="1.2" stroke-dasharray="3 2"/>`).join("")
+    + constructions.map((path) => `<path class="part-construction" d="${pathData(path)}" fill="none" stroke="#829b9b" stroke-width=".9" stroke-dasharray="6 4"/>`).join("");
   const labelY = bounds.minY - 12;
-  return `<g class="vector-part${selected ? " selected" : ""}" data-part="${esc(part.id)}" data-placement="${esc(placementId)}" transform="translate(${svgNum(x)} ${svgNum(y)}) rotate(${svgNum(rotationDeg)}) scale(${mirrored ? -1 : 1} 1)">
-    ${selected ? `<rect x="${num(bounds.minX - 4)}" y="${num(bounds.minY - 4)}" width="${num(bounds.maxX - bounds.minX + 8)}" height="${num(bounds.maxY - bounds.minY + 8)}" rx="2" fill="none" stroke="#9176d1" stroke-width=".65" stroke-dasharray="4 3"/>` : ""}
+  const bbox = selected ? `<rect x="${num(bounds.minX - 4)}" y="${num(bounds.minY - 4)}" width="${num(bounds.maxX - bounds.minX + 8)}" height="${num(bounds.maxY - bounds.minY + 8)}" rx="1" fill="none" stroke="#ba8785" stroke-width=".7" stroke-dasharray="5 3"/>` : "";
+  const grain = ["front", "back", "strap"].includes(part.id) && bounds.maxY - bounds.minY > 45
+    ? `<g class="grain-line"><path d="M ${num((bounds.maxX + bounds.minX)/2)} ${num(bounds.minY + 23)} V ${num(bounds.maxY - 20)}" fill="none" stroke="#9a8271" stroke-width=".9"/><path d="M ${num((bounds.maxX + bounds.minX)/2 - 4)} ${num(bounds.minY + 29)} l4 -6 4 6 M ${num((bounds.maxX + bounds.minX)/2 - 4)} ${num(bounds.maxY - 26)} l4 6 4 -6" fill="none" stroke="#9a8271" stroke-width=".9"/></g>` : "";
+  return `<g class="vector-part${selected ? " selected" : ""}${dragging ? " dragging" : ""}" data-part="${esc(part.id)}" data-placement="${esc(placementId)}" transform="translate(${svgNum(x)} ${svgNum(y)}) rotate(${svgNum(rotationDeg)}) scale(${mirrored ? -1 : 1} 1)">
+    ${bbox}
     ${paths}
-    <text class="part-label" x="${num(bounds.minX)}" y="${num(labelY)}" fill="${selected ? '#d9caff' : '#9aa9bf'}" font-size="10">${esc(part.name)}</text>
+    ${grain}
+    <text class="part-label" x="${num(bounds.minX + 4)}" y="${num(labelY)}" font-size="15">${esc(part.name)}</text>
   </g>`;
 }
 function dimensions(part) {
@@ -182,16 +189,19 @@ function makeScene() {
     const layout = project.layouts[0];
     const material = project.materials.find((entry) => entry.id === layout?.materialId) ?? project.materials[0];
     if (!material) return "";
-    let output = `<rect x="0" y="0" width="${num(material.widthMm)}" height="${num(material.heightMm)}" rx="1" fill="#1a2430" stroke="#70849f" stroke-width="1.3" filter="url(#sheetShadow)"/><rect x="0" y="0" width="${num(material.widthMm)}" height="${num(material.heightMm)}" fill="url(#bigGrid)" />`;
+    let output = `<rect class="cutting-mat" x="0" y="0" width="${num(material.widthMm)}" height="${num(material.heightMm)}" rx="2" filter="url(#sheetShadow)"/><rect class="cutting-mat-grain" x="0" y="0" width="${num(material.widthMm)}" height="${num(material.heightMm)}" /><rect x="0" y="0" width="${num(material.widthMm)}" height="${num(material.heightMm)}" fill="url(#bigGrid)" />`;
     if (layout) {
       for (const placement of layout.placements) {
         const part = project.parts.find((entry) => entry.id === placement.partId);
-        if (part) {
-          output += drawPart(part, placement.position.x, placement.position.y, selection === part.id, placement.id, placement.rotationDeg, placement.mirrored);
+        if (!part) continue;
+        if (pointer?.type === "placement" && pointer.placementId === placement.id && pointer.changed) {
+          const ghostPaths = part.paths.filter(p => p.role === "outline").map(p => `<path class="ghost-contour" d="${pathData(p)}" />`).join("");
+          output += `<g transform="translate(${svgNum(pointer.initial.x)} ${svgNum(pointer.initial.y)}) rotate(${svgNum(placement.rotationDeg)}) scale(${placement.mirrored ? -1 : 1} 1)">${ghostPaths}</g>`;
         }
+        output += drawPart(part, placement.position.x, placement.position.y, selection === part.id, placement.id, placement.rotationDeg, placement.mirrored);
       }
     }
-    output += `<text x="12" y="17" fill="#b5bfd2" font-size="11">${esc(material.name)}</text><text x="${num(material.widthMm - 12)}" y="17" text-anchor="end" fill="#8d9bb1" font-size="10">${num(material.widthMm)} × ${num(material.heightMm)} mm</text>`;
+    output += `<text x="12" y="17" class="sheet-caption" font-size="15">${esc(material.name)}</text><text x="${num(material.widthMm - 12)}" y="17" text-anchor="end" class="sheet-caption" font-size="13">${num(material.widthMm)} × ${num(material.heightMm)} mm</text>`;
     return output;
   }
   if (mode === "prepare") {
@@ -199,14 +209,17 @@ function makeScene() {
     const bounds = selected ? partBounds(selected) : null;
     const offsetX = bounds ? (210 - (bounds.maxX - bounds.minX)) / 2 - bounds.minX : 0;
     const offsetY = bounds ? 70 - bounds.minY : 0;
-    return `<rect x="0" y="0" width="210" height="297" fill="#e2e6eb" filter="url(#sheetShadow)" stroke="#f9faff" stroke-width="1"/><rect x="10" y="10" width="190" height="277" fill="none" stroke="#a4aebb" stroke-width=".5" stroke-dasharray="3 2"/><text x="14" y="20" fill="#586474" font-size="8">A4 · 210 × 297 mm</text>${selected ? drawPart(selected, offsetX, offsetY, true) : ""}<text x="105" y="275" font-size="8" text-anchor="middle" fill="#647184">Reference preview · not a printable output</text>`;
+    const tracing = overlayVisible ? `<g style="opacity:${overlayOpacity / 100}"><rect class="tracing-sheet" x="16" y="-11" width="210" height="297" rx="1" fill="#f0ebe1" stroke="#ccb9a3"/><path d="M 26 15 H 206 M26 240 H206" stroke="#83969b" stroke-dasharray="6 4" stroke-width=".8" fill="none" /></g>` : "";
+    return `<rect class="paper-page" x="0" y="0" width="210" height="297" filter="url(#sheetShadow)" /><rect x="10" y="10" width="190" height="277" fill="none" stroke="#c5af9e" stroke-width=".6" stroke-dasharray="5 4"/><text class="sheet-caption" x="14" y="23" font-size="15">A4 · 210 × 297 mm</text>${tracing}${selected ? drawPart(selected, offsetX, offsetY, true) : ""}<text x="105" y="282" text-anchor="middle" class="pattern-note" font-size="12">example · not printable</text>`;
   }
   const part = project.parts.find((entry) => entry.id === selection) ?? project.parts[0];
   if (!part) return "";
   const bounds = partBounds(part);
   const offsetX = bounds ? 90 - bounds.minX : 0;
   const offsetY = bounds ? 80 - bounds.minY : 0;
-  return `<rect x="40" y="30" width="320" height="265" rx="2" fill="#1a2430" stroke="#33445a" stroke-width=".8"/><rect x="40" y="30" width="320" height="265" fill="url(#bigGrid)"/><text x="55" y="50" font-size="10" fill="#70849a">CANONICAL GEOMETRY · mm</text>${drawPart(part, offsetX, offsetY, true)}`;
+  const source = part.paths.filter(p => p.role === "outline").map(p => `<path class="source-contour" d="${pathData(p)}" transform="translate(${num(offsetX - 6)} ${num(offsetY + 5)})" />`).join("");
+  const tracing = overlayVisible ? `<g style="opacity:${overlayOpacity / 100}"><rect class="tracing-sheet" x="51" y="44" width="288" height="235" rx="1"/><path d="M 80 63 h 20 M 90 53 v20" stroke="#a8a1a0" stroke-width=".6"/></g>` : "";
+  return `<rect class="paper-page" x="40" y="30" width="320" height="265" rx="2" filter="url(#sheetShadow)"/><text x="55" y="50" class="sheet-caption" font-size="15">pattern draft · mm</text><g>${source}</g>${tracing}${drawPart(part, offsetX, offsetY, true)}`;
 }
 function renderCamera() {
   const wrap = $("canvasWrap");
@@ -245,6 +258,12 @@ function render() {
   }
   renderSidebar();
   renderInspector();
+  $("canvasWrap").dataset.mode = mode;
+  $("canvasNote").textContent = mode === "digitize" ? "trace · paper" : mode === "prepare" ? "align · A4" : "grain ↕ · cut × 1";
+  $("materialControls").hidden = mode === "nest";
+  $("overlayOpacityValue").textContent = `${overlayOpacity}%`;
+  $("toggleOverlay").textContent = overlayVisible ? "Visible" : "Hidden";
+  $("toggleOverlay").setAttribute("aria-pressed", String(overlayVisible));
   $("canvasScene").innerHTML = makeScene();
   $("emptyState").hidden = project.parts.length !== 0 || (mode === "nest" && project.materials.length > 0);
   renderCamera();
@@ -299,6 +318,7 @@ function endPointer() {
   }
   pointer = null;
   $("canvas").classList.remove("panning");
+  render();
 }
 function zoomBy(factor, x = camera.x + camera.width / 2, y = camera.y + camera.height / 2) {
   const newWidth = Math.min(4000, Math.max(38, camera.width * factor));
@@ -376,6 +396,8 @@ function loadDemo() {
 for (const button of document.querySelectorAll("[data-mode]")) {
   button.addEventListener("click", () => { mode = button.dataset.mode; fitView(); render(); });
 }
+$("overlayOpacity").addEventListener("input", (event) => { overlayOpacity = Number(event.target.value); $("overlayOpacityValue").textContent = `${overlayOpacity}%`; $("canvasScene").innerHTML = makeScene(); });
+$("toggleOverlay").addEventListener("click", () => { overlayVisible = !overlayVisible; $("toggleOverlay").textContent = overlayVisible ? "Visible" : "Hidden"; $("toggleOverlay").setAttribute("aria-pressed", String(overlayVisible)); $("canvasScene").innerHTML = makeScene(); });
 $("newProject").addEventListener("click", newProject);
 $("loadDemo").addEventListener("click", loadDemo);
 $("saveProject").addEventListener("click", saveProject);

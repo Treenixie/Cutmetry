@@ -12,6 +12,7 @@ const html = await readFile(resolve(output, "index.html"), "utf8");
 const app = await readFile(resolve(output, "app.js"), "utf8");
 assert.match(html, /<script[^>]+src="\.\/app\.js"/);
 assert.match(html, /<link[^>]+href="\.\/styles\.css"/);
+assert.match(html, /<link[^>]+href="\.\/workshop\.css"/);
 const match = app.match(/from\s+["'](\.\.\/dist\/core\/index\.js)["']/);
 assert.ok(match, "Browser app must import the deployed core module");
 const importPath = new URL(match[1], "https://preview.example/app.js").pathname.slice(1);
