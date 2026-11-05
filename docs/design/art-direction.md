@@ -116,6 +116,7 @@ Line styles must be distinguished by **dash, weight and labeling** rather than c
 - Left pane: quiet part rows, small line icon and optional colored part label. Avoid extra card borders around every item.
 - Inspector: measured dimensions and selected-object properties in crisp numeric typography. Inputs as soft inset wells; section headers as tiny graphite labels.
 - Canvas: largest and visually calmest area; no loud textures, thick strokes or glows. Toolbar floats above without covering geometry.
+- **Minimal interface copy:** default views show controls, object names, dimensions and brief statuses only. Remove duplicated headings, material explanations and tutorial paragraphs from the permanent workspace. Contextual guidance is available on demand through an Info/help affordance and tooltips. Do not let an art-direction presentation turn into a wordy production interface.
 - Status and error messages: precise wording and target-specific markers, not only colored toasts.
 - Use one sans-serif stack (existing Inter/Segoe UI stack is acceptable); no novelty handwriting font for functional controls. Handwritten style, if used at all, belongs to optional decorative chalk notes.
 - Proposed radii: inputs 6 px, panels 8 px, popovers 10 px. 1 px low-contrast borders, shadows as shallow ambient layers.
