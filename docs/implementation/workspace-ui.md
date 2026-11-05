@@ -6,6 +6,12 @@
 
 An SVG parser without a canvas and project controls offers no usable workflow. This milestone gives Cutmetry a visible place for three areas to share and inspect geometry, before importing real documents.
 
+## Tactile workspace iteration
+
+The preview is now styled as a warm sewing-pattern workbench with seamless paper/cutting-mat assets. The Digitize and Prepare canvases can show and hide a translucent **sample** tracing sheet, with an opacity slider. In Nest, dragging an existing placement shows a dashed ghost of its original position. Handwritten accents and fabric-style paper tabs are visual treatments; all underlying geometry remains numeric and vector-based.
+
+These additions do not create real photo/PDF imports, tracing, print registration or nesting optimization.
+
 ## Implemented in the preview
 
 - Shared workspace shell with Digitize, Prepare and Nest tabs.

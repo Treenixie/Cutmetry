@@ -19,6 +19,16 @@ const importPath = new URL(match[1], "https://preview.example/app.js").pathname.
 assert.equal(importPath, "dist/core/index.js");
 const runtime = await import(pathToFileURL(resolve(output, importPath)).href);
 assert.equal(typeof runtime.createProject, "function");
+const { execFileSync } = await import("node:child_process");
+execFileSync(process.execPath, ["--check", resolve(output, "app.js")], { stdio: "pipe" });
+const theme = await readFile(resolve(output, "workshop.css"), "utf8");
+assert.match(theme, /color-scheme:\s*light/);
+assert.match(theme, /assets\/paper-fiber\.svg/);
+assert.match(theme, /assets\/mat-fiber\.svg/);
+for (const id of ["overlayOpacity", "toggleOverlay", "canvasNote", "materialControls"]) {
+  assert.ok(html.includes(`id="${id}"`), `Missing workbench control ${id}`);
+}
+
 const rootFiles = await readdir(output);
 assert.ok(!rootFiles.includes("README.md"), "Do not publish the repository root");
 const coreFiles = await readdir(resolve(output, "dist", "core"));

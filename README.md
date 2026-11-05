@@ -30,6 +30,12 @@ This compiles TypeScript and runs the unit tests.
 
 Project scope, implementation plans, decisions and ideas are maintained in [docs](docs/README.md). See [Milestone 02](docs/implementation/workspace-ui.md) for the prototype's exact capabilities and limitations, and [Milestone 01](docs/implementation/milestone-01.md) for the shared geometry foundation.
 
+## Tactile workbench theme
+
+The live browser preview now includes the warm paper-and-cutting-mat theme, softly textured surfaces, handwriting-inspired labels, and a lightweight tracing overlay demo in Digitize/Prepare with visibility and opacity controls. Nest supports the existing manual drag behavior and a visual original-position ghost.
+
+The translucent overlay and reference guides are **visual demonstrations, not file-import, page-alignment, measured tracing, or automatic nesting algorithms**. The workspace still reads and writes Cutmetry JSON files locally.
+
 ## Cloudflare Pages
 
 The preview can be deployed through Git-connected Cloudflare Pages. **Hosting is not enabled by repository changes alone.** See [Cloudflare Pages deployment](docs/deployment/cloudflare-pages.md) for the exact branch, build command, output directory, and account connection steps.
