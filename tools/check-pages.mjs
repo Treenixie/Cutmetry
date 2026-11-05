@@ -24,7 +24,7 @@ execFileSync(process.execPath, ["--check", resolve(output, "app.js")], { stdio: 
 const theme = await readFile(resolve(output, "workshop.css"), "utf8");
 assert.match(theme, /color-scheme:\s*light/);
 assert.match(theme, /assets\/paper-fiber\.svg/);
-assert.match(theme, /assets\/mat-fiber\.svg/);
+assert.match(html, /assets\/mat-fiber\.svg/);
 for (const id of ["overlayOpacity", "toggleOverlay", "canvasNote", "materialControls"]) {
   assert.ok(html.includes(`id="${id}"`), `Missing workbench control ${id}`);
 }
