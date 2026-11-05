@@ -16,8 +16,12 @@ async function copyRuntime(source, target) {
 
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
-for (const filename of ["index.html", "app.js", "styles.css", "_headers"]) {
+for (const filename of ["index.html", "app.js", "styles.css", "workshop.css", "_headers"]) {
   await copyFile(resolve(root, "web", filename), resolve(output, filename));
+}
+await mkdir(resolve(output, "assets"), { recursive: true });
+for (const asset of ["paper-fiber.svg", "mat-fiber.svg"]) {
+  await copyFile(resolve(root, "web", "assets", asset), resolve(output, "assets", asset));
 }
 await copyRuntime(resolve(root, "dist", "core"), resolve(output, "dist", "core"));
 console.log(`Prepared Cloudflare Pages assets in ${output}`);

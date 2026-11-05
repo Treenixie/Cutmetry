@@ -1,0 +1,326 @@
+
+/* CUTMETRY — tactile sewing workbench skin. All geometry stays vector-sharp. */
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Nunito+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  color-scheme: light;
+  --bg: #eee7dd; --panel: #faf6ef; --panel-strong: #fffaf2;
+  --panel-light: #efe6da; --edge: #d8cbb9; --edge-soft: #e8dfd2;
+  --text: #51463c; --muted: #786d63; --dim: #9a8d80;
+  --accent: #c99598; --accent-soft: #846b5e; --accent-bg: #f2e1df;
+  --craft-paper: #fcf8f0; --craft-ink: #65564a; --craft-rose: #c99598;
+  --craft-sage: #889e8d; --craft-blue: #b9cbd0; --craft-mat: #829589;
+  font-family: "Nunito Sans", "Segoe UI", sans-serif;
+  font-size: 13px; font-synthesis: none;
+}
+html, body { background: #e6dbcd; color: var(--text); min-width: 810px; }
+body {
+  background-image: url("./assets/paper-fiber.svg");
+  background-size: 280px 280px;
+}
+button, input { font-family: inherit; }
+button:focus-visible, input:focus-visible, summary:focus-visible, svg:focus-visible {
+  outline: 2px solid #94606b; outline-offset: 3px;
+}
+.app {
+  width: min(100%, 1840px); height: calc(100dvh - 24px); min-height: 540px;
+  margin: 12px auto; overflow: hidden; border: 1px solid #cab8a2;
+  border-radius: 14px; box-shadow: 0 15px 42px #66503a2d, 0 3px 8px #5f493218;
+  background: var(--panel);
+}
+.app-header, .workflow-nav, .sidebar, .editor-toolbar, .editor-status, .mode-information {
+  background-color: var(--panel);
+  background-image: url("./assets/paper-fiber.svg");
+  background-size: 280px 280px;
+}
+.app-header {
+  height: 70px; flex-basis: 70px; border-bottom: 1px solid #d9cbbc;
+  padding: 0 25px; box-shadow: inset 0 -3px 7px #b4a18b13;
+}
+.brand-mark { color: #bd8582; width: 33px; height: 33px; }
+.brand-mark svg { width: 30px; height: 30px; }
+.brand-word {
+  font-family: "Caveat", "Segoe Print", cursive; font-size: 33px;
+  font-weight: 700; letter-spacing: -.6px; line-height: 1;
+  color: #584136;
+}
+.brand-dot { color: #b9797c; }
+.app-divider { border-left-color: #d0bda9; }
+.project-name, .project-heading {
+  color: #725f53; font-family: "Caveat", "Segoe Print", cursive;
+  font-weight: 600;
+}
+.project-name { font-size: 21px; }
+.prototype-chip {
+  font: 700 9px "Nunito Sans", sans-serif; letter-spacing: .8px;
+  background: #e9d1c6; color: #75594e; border: 1px solid #d6b5a6;
+  border-radius: 3px 6px 3px 4px; padding: 5px 8px;
+  box-shadow: 1px 2px 2px #94776516; transform: rotate(-2deg);
+}
+.button, .tool-button, .icon-button {
+  color: var(--text); border-color: #d8c7b3;
+  background: #f9f3e8;
+  box-shadow: 0 2px 3px #826b551a, inset 0 1px #fffdf9;
+}
+.button { border-radius: 5px; font-size: 12px; font-weight: 700; }
+.button.quiet { color: #6b5a4c; background: transparent; }
+.button.quiet:hover, .tool-button:hover, .icon-button:hover { background: #efe3d5; color: #5d433d; }
+.button.primary {
+  background: #bd8886; border: 1px solid #ad7875;
+  color: #fffaf5; font-weight: 800; box-shadow: 1px 2px 3px #94736539;
+}
+.button.primary:hover { background: #ad7979; }
+.workflow-nav {
+  height: 56px; flex-basis: 56px; padding: 0 25px;
+  border-bottom: 1px dashed #d0bda7; box-shadow: inset 0 -1px #fffaf3;
+}
+.workflow-tabs { align-items: flex-end; gap: 12px; }
+.workflow-tab {
+  position: relative; height: 43px; padding: 0 23px; margin-bottom: 0;
+  border: 1px solid transparent; border-bottom: none;
+  border-radius: 6px 10px 0 0; color: #75685d; font-size: 14px;
+  font-weight: 700; background: transparent;
+  transition: background-color .14s, transform .14s;
+}
+.workflow-tab:hover { background: #eee4d7; color: #574c42; }
+.workflow-tab.active {
+  color: #55483e; background: #efd4d1; border: 1px solid #dfc1b9;
+  border-bottom: 0; box-shadow: 0 -2px 7px #866a5412;
+  background-image: url("./assets/paper-fiber.svg"); background-size: 280px;
+}
+.workflow-tab.active[data-mode="prepare"] { background-color: #dfe9e9; border-color: #c4d3d3; }
+.workflow-tab.active[data-mode="nest"] { background-color: #dae2d1; border-color: #bbcbb4; }
+.workflow-tab.active::after {
+  content: ""; position: absolute; bottom: -1px; left: 0; right: 0;
+  height: 2px; background: inherit;
+}
+.workflow-tab .mode-symbol, .workflow-tab.active .mode-symbol { color: #9b7b72; font-size: 19px; }
+.workflow-tab.active[data-mode="nest"] .mode-symbol { color: #587662; }
+.workflow-tab.active[data-mode="prepare"] .mode-symbol { color: #668791; }
+.workflow-hint { display: none; }
+.workspace-grid { grid-template-columns: 235px minmax(310px,1fr) 259px; }
+.sidebar { color: #594a3f; }
+.left-sidebar { border-right: 1px solid #d9cbbc; box-shadow: inset -5px 0 14px #9c84600c; }
+.inspector { border-left: 1px solid #d9cbbc; }
+.panel-section { padding: 18px 17px; border-bottom: 1px dashed #dfcfba; }
+.section-heading, .property-heading, .mode-info-label {
+  color: #897364; font-size: 10px; letter-spacing: 1.25px; font-weight: 800;
+}
+.project-overview { position: relative; min-height: 137px; }
+.project-overview::after {
+  content: "✄"; position: absolute; right: 24px; top: 58px;
+  transform: rotate(15deg); color: #c8b4a0;
+  font: 35px "Caveat", "Segoe Print", cursive; opacity: .55;
+}
+.project-heading { font-size: 24px; margin-top: 6px; }
+.project-meta { color: #847365; font-size: 11px; }
+.project-caption { display: none; }
+.icon-button { width: 29px; height: 29px; border-radius: 5px; }
+.icon-button.subtle { box-shadow: none; }
+.small-count { color: #a08670; }
+.parts-browser { padding-top: 19px; }
+.parts-list { gap: 8px; margin-top: 17px; }
+.part-row {
+  position: relative; background: #fffaf2; border: 1px solid #e4d6c5;
+  border-radius: 4px 7px 5px 4px; padding: 9px 9px;
+  box-shadow: 1px 2px 3px #92765a12;
+}
+.part-row:hover { background: #f6e9df; }
+.part-row.selected {
+  background: #f1ded7; border-color: #d7b6ad;
+  box-shadow: 0 2px 7px #a97c6d19;
+}
+.part-row.selected::before {
+  content: ""; width: 4px; background: #c58e8d;
+  position: absolute; left: -1px; top: 7px; bottom: 7px; border-radius: 2px;
+}
+.part-icon, .part-row.selected .part-icon {
+  background: #faf3e8; border: 1px solid #dbc7b6;
+  color: #9c786e; box-shadow: inset 0 1px #fffefb;
+}
+.part-name { color: #5e4a3d; font-weight: 750; font-size: 12px; }
+.part-dimensions { color: #978273; font-size: 11px; }
+.sidebar-bottom {
+  border-top: 1px dashed #dbcbb6;
+  background: #f2e4ce url("./assets/paper-fiber.svg") repeat;
+  background-size: 280px; padding: 14px 17px 20px;
+  position: relative;
+}
+.sidebar-bottom::before {
+  content: ""; width: 48px; height: 15px; top: -8px; left: 35%;
+  position: absolute; transform: rotate(-5deg);
+  background: #d5a59b75; border: 1px solid #c8948580;
+}
+.help-heading { color: #765f4e; }
+.help-icon { border-color: #9c8674; color: #857264; }
+.sidebar-bottom p { color: #75685c; font-size: 11px; margin: 6px 0 9px; }
+.text-link { color: #936565; font-size: 12px; font-weight: 800; }
+.text-link:hover { color: #694744; }
+.project-help summary {
+  color: #796557; font-size: 11px; cursor: pointer; margin: 0 0 10px;
+}
+.project-help[open] p { margin-top: 9px; }
+.editor { background: #ece4da; }
+.editor-toolbar {
+  height: 63px; flex-basis: 63px; padding: 0 18px;
+  border-bottom: 1px solid #d8cbbc;
+}
+.tool-title strong { color: #6b4f43; font: 700 21px/1 "Caveat", "Segoe Print", cursive; }
+.tool-subtitle { display:none; }
+.active-indicator { width: 7px; height: 7px; background: #bd8e8b; box-shadow: 0 0 0 4px #ecd2cb; }
+.toolbar-caption { color: #947f6b; }
+.tool-button { border-radius: 5px; color: #69584c; }
+.zoom-text { color: #735d51; }
+.tool-separator { border-color: #d3bfaa; }
+.canvas-wrap {
+  isolation: isolate; background: #f5f0e8;
+  background-image: url("./assets/paper-fiber.svg");
+  background-size: 280px 280px;
+}
+.canvas-wrap::before {
+  content: ""; position: absolute; z-index: 0; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 40%, #a9917440 100%);
+}
+#canvas { position: relative; z-index: 1; }
+#canvas .vector-part { cursor: pointer; }
+#canvas .part-contour {
+  fill: #f9f2e8; stroke: #6b5b50; stroke-width: 1.7;
+  filter: drop-shadow(0px 2px 1.2px rgba(65,45,25,.14));
+}
+#canvas .vector-part:hover .part-contour { stroke: #b47f80; }
+#canvas .vector-part.selected .part-contour { stroke: #bb8587; stroke-width: 2; }
+#canvas .vector-part.dragging .part-contour { fill-opacity: .65; }
+#canvas .part-hole { fill: #ede5d9; stroke: #957d6c; }
+#canvas .part-construction { fill: none; stroke: #8a9f9d; }
+#canvas .part-label, #canvas .grain-label, #canvas .sheet-caption {
+  font-family: "Caveat", "Segoe Print", cursive; font-weight: 600;
+  fill: #77594a;
+}
+#canvas .part-label { font-size: 15px; }
+#canvas .grain-line { stroke: #90735f; stroke-width: .9; }
+#canvas .source-contour { fill: none; stroke: #8e9e9b; stroke-width: 1.3; stroke-dasharray: 6 4; }
+#canvas .ghost-contour { fill: none; stroke: #f3e7d5; stroke-width: 1.8; stroke-dasharray: 7 4; }
+#canvas .tracing-sheet { fill: #f3eee6; stroke: #c7b8a3; stroke-width: .55; }
+#canvas .paper-page { fill: url(#paperTexture); stroke: #d5c4b0; stroke-width: 1.2; }
+#canvas .cutting-mat { fill: #829589; stroke: #74887a; stroke-width: 1.5; }
+#canvas .cutting-mat-grain { fill: url(#matTexture); opacity: .18; }
+#canvas .pattern-note { font-family: "Caveat", "Segoe Print", cursive; font-size: 15px; fill: #7d6f58; }
+.canvas-top-left { top: 14px; left: 15px; z-index: 2; }
+.canvas-pill {
+  height: auto; min-height: 24px; padding: 3px 10px;
+  background: #eee0cc; border: 1px solid #ddc9ac;
+  border-radius: 3px 5px 3px 2px; color: #775b48;
+  font: 700 14px "Caveat", "Segoe Print", cursive;
+  letter-spacing: 0; transform: rotate(-1.5deg);
+  box-shadow: 1px 3px 3px #90765c16;
+}
+.canvas-pill.muted-pill {
+  background: #f6f0e6; color: #877563; border-color: #e1d1bd;
+  font: 700 11px "Nunito Sans", sans-serif; transform: none;
+}
+.canvas-bottom-left {
+  z-index: 2; left: 15px; bottom: 13px; color: #746859;
+  background: #f8f1e3db; border: 1px solid #e5d6c0;
+  border-radius: 4px; font-size: 10px; padding: 7px 10px;
+}
+.dot { background: #c58c8c; }
+.canvas-note {
+  position: absolute; right: 21px; bottom: 34px; z-index: 2;
+  pointer-events: none; background: #f2dfb9;
+  padding: 10px 18px 11px; color: #78604a;
+  font: 600 20px/1 "Caveat", "Segoe Print", cursive;
+  transform: rotate(3deg); box-shadow: 3px 5px 10px #715a4230;
+  border: 1px solid #e3d0aa;
+}
+.canvas-note::before {
+  content:""; position:absolute; left:36%; top:-8px; height:13px; width:43px;
+  background:#cba39799; transform:rotate(-5deg);
+}
+.canvas-wrap[data-mode="prepare"] .canvas-note { background:#f1e4d6; transform:rotate(-2deg); }
+.canvas-wrap[data-mode="nest"] .canvas-note { background:#e7ddbf; }
+.canvas-empty {
+  z-index:3; background: #fcf7ed; border: 1px dashed #cbb79f;
+  color:#654f42; border-radius:7px; box-shadow:4px 6px 17px #89705d20;
+}
+.canvas-empty p { color:#776556; }
+.empty-symbol { color:#bc8a87; }
+.editor-status {
+  background-color: #f5eadc; border-top: 1px solid #dbcfbf;
+  color: #796857;
+}
+.status-diamond { color: #ac817d; }
+.status-split { color: #ad9a86; }
+.inspector-heading h2 {
+  font: 700 26px/1.1 "Caveat", "Segoe Print", cursive;
+  color:#765847; margin:10px 0 5px;
+}
+.inspector-heading p { color:#8c7a69; }
+.inspector-content { padding:17px; }
+.property-group { margin-bottom:19px; }
+.property-heading { margin-bottom:9px; }
+.property-input {
+  height:35px; background:#fff9f0; color:#614c41;
+  border:1px solid #dccbb4; border-radius:4px;
+}
+.property-label, .property-small { color:#927d6b; }
+.property-value {
+  background: #f8eee1; border: 1px solid #e0cfba;
+  border-radius: 4px; padding: 9px;
+}
+.property-number { color:#594c42; font-size:15px; }
+.property-unit { color:#8d7765; }
+.property-line { color:#786a5c; border-bottom:1px dashed #decdb9; }
+.property-line strong { color:#5d5144; }
+.verified { color:#5c8066 !important; }
+.unverified { color:#966c45 !important; }
+.inspector-empty { color:#8a7667; }
+.material-controls {
+  padding: 14px 17px 15px; border-top: 1px dashed #dccab3;
+  background: #f4e5dc url("./assets/paper-fiber.svg") repeat;
+  background-size:280px;
+}
+.material-controls[hidden] { display:none !important; }
+.material-controls .material-row {
+  display:flex; align-items:center; justify-content:space-between;
+  color:#725b50; font-weight:800; font-size:10px; letter-spacing:1px;
+}
+.material-controls .material-row button {
+  background:#fff9f3; color:#75584c; border:1px solid #d8bfb1;
+  border-radius:3px; padding:4px 8px; font-size:10px; font-weight:800; cursor:pointer;
+}
+.material-controls .material-row button[aria-pressed="false"] { opacity:.55; }
+.material-controls label {
+  display:flex; justify-content:space-between; margin-top:12px;
+  color:#79675c; font-size:11px;
+}
+.material-controls output { color:#896565; font-weight:800; }
+.material-controls input[type=range] { margin-top:8px; width:100%; accent-color:#ba8b8a; cursor:pointer; }
+.mode-information {
+  margin-top:auto; border-top:1px dashed #dbc8b3;
+  padding:12px 17px; background-color:#f2e6d3;
+}
+.mode-information summary { cursor:pointer; font-size:11px; color:#735f50; }
+.mode-info-label { display:inline; letter-spacing:.7px; }
+.mode-info-title { display:inline; margin:0 0 0 9px; color:#846857; font-size:12px; }
+.mode-info-text { color:#796b5d; margin:9px 0 0; line-height:1.6; }
+.toast {
+  right: 277px; background:#faf2df; color:#684f43; border:1px solid #d9bda5;
+  border-radius:5px; box-shadow: 3px 5px 15px #7a5b4535;
+}
+@media (max-width:1250px) {
+  .workspace-grid { grid-template-columns: 202px minmax(300px,1fr) 226px; }
+  .app-header { padding:0 15px; }
+  .workflow-tab { padding:0 16px; }
+  .project-name { max-width: 150px; }
+}
+@media (max-width:930px) {
+  .app { height:100dvh; margin:0; border-radius:0; border:0; }
+  .workspace-grid { grid-template-columns: 168px minmax(290px,1fr) 183px; }
+  .panel-section, .inspector-content, .material-controls { padding-left:11px; padding-right:11px; }
+  .workflow-tab { padding:0 11px; }
+  .canvas-note { display:none; }
+  .project-overview::after { display:none; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .workflow-tab, .toast { transition:none !important; }
+}
