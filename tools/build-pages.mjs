@@ -20,7 +20,7 @@ for (const filename of ["index.html", "app.js", "styles.css", "workshop.css", "_
   await copyFile(resolve(root, "web", filename), resolve(output, filename));
 }
 await mkdir(resolve(output, "assets"), { recursive: true });
-for (const asset of ["paper-fiber.svg", "mat-fiber.svg"]) {
+for (const asset of ["paper-fiber.svg", "mat-fiber.svg", "favicon.svg"]) {
   await copyFile(resolve(root, "web", "assets", asset), resolve(output, "assets", asset));
 }
 await copyRuntime(resolve(root, "dist", "core"), resolve(output, "dist", "core"));

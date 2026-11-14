@@ -5,7 +5,7 @@ import { pathToFileURL } from "node:url";
 
 const root = resolve(import.meta.dirname, "..");
 const output = resolve(root, "build", "pages");
-for (const filename of ["index.html", "styles.css", "workshop.css", "app.js", "_headers", "assets/paper-fiber.svg", "assets/mat-fiber.svg", "dist/core/index.js"]) {
+for (const filename of ["index.html", "styles.css", "workshop.css", "app.js", "_headers", "assets/paper-fiber.svg", "assets/mat-fiber.svg", "assets/favicon.svg", "dist/core/index.js"]) {
   assert.ok((await stat(resolve(output, filename))).isFile(), `Missing Pages asset: ${filename}`);
 }
 const html = await readFile(resolve(output, "index.html"), "utf8");
@@ -25,6 +25,7 @@ const theme = await readFile(resolve(output, "workshop.css"), "utf8");
 assert.match(theme, /color-scheme:\s*light/);
 assert.match(theme, /assets\/paper-fiber\.svg/);
 assert.match(html, /assets\/mat-fiber\.svg/);
+assert.match(html, /<link[^>]+rel="icon"[^>]+href="\.\/assets\/favicon\.svg"/);
 for (const id of ["overlayOpacity", "toggleOverlay", "canvasNote", "materialControls"]) {
   assert.ok(html.includes(`id="${id}"`), `Missing workbench control ${id}`);
 }
